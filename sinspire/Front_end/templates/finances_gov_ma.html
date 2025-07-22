@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{# Définition du titre de la page #}
+{% block title %}Documents Finances.gov.ma{% endblock %}
+
+{# Contenu principal de la page des documents #}
+{% block content %}
+<div class="documents-container">
+    {# Titre de la page #}
+    <h1 class="page-title">Documents du finances_gov_ma</h1>
+    
+    {# Liste des documents #}
+    <div class="documents-list">
+        {# Boucle sur les documents #}
+        {% for document in documents %}
+        <div class="document-item">
+            {# Icône PDF vectorielle #}
+            <div class="document-icon">
+                <svg class="pdf-icon" viewBox="0 0 24 24">
+                    <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M10.92,12.31C10.68,11.54 10.15,9.08 11.55,9.04C12.95,9 12.03,12.16 12.03,12.16C12.42,13.65 14.05,14.72 14.05,14.72C14.55,14.57 17.4,14.24 17,15.72C16.57,17.2 13.5,15.81 13.5,15.81C11.55,15.95 10.09,16.47 10.09,16.47C8.96,18.58 7.64,19.5 7.1,19.1C6.43,18.5 7.87,16.64 7.87,16.64C8.5,15.83 9.7,14.68 9.7,14.68C10.91,13.74 10.92,12.31 10.92,12.31M11.57,13.15C11.17,14.45 10.37,15.84 10.37,15.84C11.22,15.5 13.08,15.11 13.08,15.11C11.94,14.11 11.57,13.15 11.57,13.15M14.71,15.32C14.71,15.32 16.46,15.97 16.5,15.71C16.57,15.44 15.17,15.2 14.71,15.32M9.05,16.81C8.28,17.89 7.94,18.41 7.94,18.41C8.28,18.41 9.05,16.81 9.05,16.81M11.57,10.61C11.57,10.61 11.3,11.31 11.57,12.08C11.84,12.85 12.17,11.55 11.57,10.61Z" />
+                </svg>
+            </div>
+            {# Informations du document #}
+            <div class="document-info">
+                <h3 class="document-title">{{ document.title }}</h3>
+                {# Bouton de téléchargement #}
+                <a href="{{ document.file_path }}" class="download-button" target="_blank">
+                    <span class="download-icon">↓</span>
+                    <span class="download-text">Télécharger</span>
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        {# Message affiché si aucun document n'est disponible #}
+        <p class="no-documents">Aucun document disponible pour le moment.</p>
+        {% endfor %}
+    </div>
+</div>
+
+{# Styles CSS spécifiques à la page #}
+<style>
+/* Conteneur principal */
+.documents-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Style du titre de la page */
+.page-title {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Grille responsive pour les documents */
+.documents-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Style de chaque élément document */
+.document-item {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* Animation au survol */
+.document-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Style de l'icône */
+.document-icon {
+    margin-right: 1rem;
+}
+
+.pdf-icon {
+    width: 40px;
+    height: 40px;
+    fill: #e74c3c;
+}
+
+/* Style des informations du document */
+.document-info {
+    flex: 1;
+}
+
+.document-title {
+    font-size: 1.1rem;
+    color: #2c3e50;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.4;
+}
+
+/* Style du bouton de téléchargement */
+.download-button {
+    display: inline-flex;
+    align-items: center;
+    background-color: #3498db;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.download-button:hover {
+    background-color: #2980b9;
+}
+
+.download-icon {
+    margin-right: 0.5rem;
+    font-size: 1.2rem;
+}
+
+/* Style du message d'absence de documents */
+.no-documents {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #7f8c8d;
+    font-size: 1.2rem;
+    padding: 2rem;
+}
+</style>
+{% endblock %}

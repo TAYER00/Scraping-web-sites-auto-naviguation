@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{# Définition du titre de la page #}
+{% block title %}Accueil - BKAM Scraper{% endblock %}
+
+{# Contenu principal de la page d'accueil #}
+{% block content %}
+<div class="home-container">
+    {# En-tête de la page d'accueil #}
+    <h1>Bienvenue sur BKAM Scraper</h1>
+    <p>Consultez les dernières informations de Bank Al-Maghrib :</p>
+    
+    {# Grille des sections principales #}
+    <div class="section-grid">
+        {# Section des communiqués #}
+        <div class="section-card">
+            <h2>Communiqués</h2>
+            <p>Accédez aux derniers communiqués de presse de Bank Al-Maghrib.</p>
+            <a href="{% url 'communiques' %}" class="btn">Voir les communiqués</a>
+        </div>
+
+        {# Section des discours #}
+        <div class="section-card">
+            <h2>Discours</h2>
+            <p>Consultez les discours officiels et interventions.</p>
+            <a href="{% url 'discours' %}" class="btn">Voir les discours</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

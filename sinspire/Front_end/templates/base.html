@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}BKAM & finances_gov_ma Scraper{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+    <div class="container">
+        <h1 class="logo">BKAM & finances_gov_ma Scraper</h1>
+    </div>
+</header>
+
+<main class="container">
+    <section class="institution">
+        <h2><i class="fas fa-bank"></i> Bank Al-Maghrib (BKAM)</h2>
+        <p>Ce site contient deux pages distinctes :</p>
+        <div class="pages-grid">
+            <a href="{% url 'communiques' %}" class="card">
+                <i class="fas fa-bullhorn fa-2x"></i>
+                <h3>Communiqués</h3>
+                <p>Communiqués officiels publiés par la banque.</p>
+            </a>
+            <a href="{% url 'discours' %}" class="card">
+                <i class="fas fa-microphone fa-2x"></i>
+                <h3>Discours</h3>
+                <p>Discours et interventions publiques.</p>
+            </a>
+        </div>
+    </section>
+
+    <section class="institution">
+        <h2><i class="fas fa-landmark"></i> Conseil Économique, Social et Environnemental (finances_gov_ma)</h2>
+        <p>finances_gov_ma publie ses documents via une seule page :</p>
+        <div class="pages-grid">
+            <a href="{% url 'finances_gov_ma' %}" class="card">
+                <i class="fas fa-file-alt fa-2x"></i>
+                <h3>Documents finances_gov_ma</h3>
+                <p>Accès aux rapports, notes et publications.</p>
+            </a>
+        </div>
+    </section>
+
+    <section class="institution">
+        <h2><i class="fas fa-globe"></i> Nations Unies (UN)</h2>
+        <p>Accédez aux documents des Nations Unies :</p>
+        <div class="pages-grid">
+            <a href="{% url 'un_documents' %}" class="card">
+                <i class="fas fa-file-pdf fa-2x"></i>
+                <h3>Documents UN</h3>
+                <p>Accès aux documents et contributions des Nations Unies.</p>
+            </a>
+        </div>
+    </section>
+
+    {% block content %}{% endblock %}
+</main>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2025 BKAM & finances_gov_ma Scraper. Tous droits réservés.</p>
+    </div>
+</footer>
+</body>
+</html>

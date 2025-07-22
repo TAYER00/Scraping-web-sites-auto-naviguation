@@ -121,8 +121,21 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Dossier pour stocker les PDFs téléchargés
-PDF_DOWNLOADS_ROOT = BASE_DIR / 'pdf_downloads'
+# Configuration pour les PDFs
+PDF_DOWNLOADS_URL = '/'
+PDF_DOWNLOADS_ROOT = BASE_DIR
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'agriculture.gov.ma',
+    BASE_DIR / 'bkam.ma',
+    BASE_DIR / 'cese.ma',
+    BASE_DIR / 'finances.gov.ma',
+    BASE_DIR / 'oecd.org',
+]
+
+# Configuration pour servir les fichiers en développement
+if DEBUG:
+    SERVE_STATIC_FILES = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

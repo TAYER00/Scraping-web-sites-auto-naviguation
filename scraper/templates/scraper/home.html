@@ -1,0 +1,202 @@
+{% extends 'scraper/base.html' %}
+
+{% block title %}Accueil - Documents PDF{% endblock %}
+
+{% block content %}
+<div class="home-section">
+    <header class="hero-section">
+        <h1 class="hero-title">Bienvenue sur notre Plateforme Documentaire</h1>
+        <p class="hero-description">Accédez à une collection complète de documents PDF provenant de diverses institutions.</p>
+    </header>
+
+    <div class="websites-grid">
+        <!-- Bank Al-Maghrib -->
+        <div class="website-card" data-aos="fade-up">
+            <div class="card-header">
+                <i class="fas fa-landmark"></i>
+                <h2>Bank Al-Maghrib</h2>
+            </div>
+            <div class="card-content">
+                <div class="document-type">
+                    <h3>Communiqués</h3>
+                    <p>Accédez aux derniers communiqués officiels de Bank Al-Maghrib.</p>
+                    <a href="{% url 'scraper:bkam_communiques' %}" class="btn btn-primary">
+                        <i class="fas fa-file-alt me-2"></i>Voir les communiqués
+                    </a>
+                </div>
+                <div class="document-type">
+                    <h3>Discours</h3>
+                    <p>Consultez les discours importants de Bank Al-Maghrib.</p>
+                    <a href="{% url 'scraper:bkam_discours' %}" class="btn btn-primary">
+                        <i class="fas fa-microphone-alt me-2"></i>Voir les discours
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Agriculture.gov.ma -->
+        <div class="website-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="card-header">
+                <i class="fas fa-leaf"></i>
+                <h2>Agriculture.gov.ma</h2>
+            </div>
+            <div class="card-content">
+                <p>Documents officiels du Ministère de l'Agriculture.</p>
+                <a href="{% url 'scraper:agriculture_documents' %}" class="btn btn-primary">
+                    <i class="fas fa-folder-open me-2"></i>Voir les documents
+                </a>
+            </div>
+        </div>
+
+        <!-- CESE.ma -->
+        <div class="website-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="card-header">
+                <i class="fas fa-balance-scale"></i>
+                <h2>CESE.ma</h2>
+            </div>
+            <div class="card-content">
+                <p>Publications du Conseil Économique, Social et Environnemental.</p>
+                <a href="{% url 'scraper:cese_documents' %}" class="btn btn-primary">
+                    <i class="fas fa-folder-open me-2"></i>Voir les documents
+                </a>
+            </div>
+        </div>
+
+        <!-- Finances.gov.ma -->
+        <div class="website-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="card-header">
+                <i class="fas fa-chart-line"></i>
+                <h2>Finances.gov.ma</h2>
+            </div>
+            <div class="card-content">
+                <p>Documents du Ministère de l'Économie et des Finances.</p>
+                <a href="{% url 'scraper:finances_documents' %}" class="btn btn-primary">
+                    <i class="fas fa-folder-open me-2"></i>Voir les documents
+                </a>
+            </div>
+        </div>
+
+        <!-- OECD.org -->
+        <div class="website-card" data-aos="fade-up" data-aos-delay="400">
+            <div class="card-header">
+                <i class="fas fa-globe"></i>
+                <h2>OECD.org</h2>
+            </div>
+            <div class="card-content">
+                <p>Publications de l'Organisation de Coopération et de Développement Économiques.</p>
+                <a href="{% url 'scraper:oecd_documents' %}" class="btn btn-primary">
+                    <i class="fas fa-folder-open me-2"></i>Voir les documents
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.home-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.hero-section {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+}
+
+.hero-description {
+    font-size: 1.25rem;
+    color: var(--text-light);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.websites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.website-card {
+    background: white;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+}
+
+.website-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.card-header {
+    background: var(--primary-color);
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.card-header i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.card-header h2 {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.card-content {
+    padding: 1.5rem;
+}
+
+.document-type {
+    margin-bottom: 1.5rem;
+}
+
+.document-type:last-child {
+    margin-bottom: 0;
+}
+
+.document-type h3 {
+    font-size: 1.25rem;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+.document-type p {
+    color: var(--text-light);
+    margin-bottom: 1rem;
+}
+
+.btn {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-weight: 500;
+    text-align: center;
+    border-radius: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-description {
+        font-size: 1.1rem;
+    }
+
+    .websites-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}

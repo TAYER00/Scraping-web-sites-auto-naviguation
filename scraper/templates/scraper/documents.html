@@ -1,0 +1,179 @@
+{% extends 'scraper/base.html' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="documents-section">
+    <header class="section-header">
+        <h1 class="section-title">{{ page_title }}</h1>
+        <p class="section-description">Consultez et téléchargez les documents PDF disponibles.</p>
+    </header>
+    
+    <div class="pdf-list">
+        {% for document in documents %}
+        <div class="pdf-item" data-aos="fade-up">
+            <div class="pdf-icon">
+                <i class="fas fa-file-pdf"></i>
+            </div>
+            <div class="pdf-content">
+                <h3 class="pdf-title">{{ document.title }}</h3>
+                {% if document.date %}
+                <p class="pdf-date">
+                    <i class="fas fa-calendar-alt me-2"></i>
+                    {{ document.date }}
+                </p>
+                {% endif %}
+                <div class="pdf-actions">
+                    <a href="{{ document.file_path }}" class="btn btn-primary" target="_blank" type="application/pdf">
+                        <i class="fas fa-eye me-2"></i>Visualiser
+                    </a>
+                    <a href="{{ document.file_path }}" class="btn btn-secondary" download type="application/pdf">
+                        <i class="fas fa-download me-2"></i>Télécharger
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="no-documents">
+            <i class="fas fa-folder-open fa-3x mb-3"></i>
+            <p>Aucun document disponible pour le moment.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+<style>
+.documents-section {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-title {
+    color: var(--text-color);
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.section-description {
+    color: var(--text-light);
+    font-size: 1.1rem;
+}
+
+.pdf-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+}
+
+.pdf-icon {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(37, 99, 235, 0.1);
+    border-radius: 1rem;
+}
+
+.pdf-content {
+    flex: 1;
+}
+
+.pdf-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+.pdf-date {
+    font-size: 0.875rem;
+    color: var(--text-light);
+    margin-bottom: 1rem;
+}
+
+.pdf-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.no-documents {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-light);
+}
+
+.modal-content {
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.modal-header {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+.modal-header .btn-close {
+    filter: brightness(0) invert(1);
+}
+
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 2rem;
+    }
+
+    .pdf-item {
+        flex-direction: column;
+        text-align: center;
+        padding: 1rem;
+    }
+
+    .pdf-icon {
+        margin: 0 auto;
+    }
+
+    .pdf-actions {
+        flex-direction: column;
+    }
+
+    .pdf-actions .btn {
+        width: 100%;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animation au survol des éléments
+    const pdfItems = document.querySelectorAll('.pdf-item');
+    pdfItems.forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+            this.style.boxShadow = 'var(--shadow-lg)';
+        });
+
+        item.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = 'var(--shadow-sm)';
+        });
+    });
+});
+</script>
+{% endblock %}

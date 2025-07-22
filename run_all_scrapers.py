@@ -1,56 +1,106 @@
 import os
 import sys
-from importlib.util import spec_from_file_location, module_from_spec
+import subprocess
+import signal
+import time
+from typing import Dict, List
 
-def import_scraper(path):
-    spec = spec_from_file_location("scraper", path)
-    module = module_from_spec(spec)
-    sys.modules["scraper"] = module
-    spec.loader.exec_module(module)
-    return module
 
-def run_scraper(site_dir):
-    print(f"\n{'='*50}")
-    print(f"🎯 Traitement du site: {site_dir}")
-    print(f"{'='*50}\n")
+print("""
+
+- 1.Lancez python run_all_scrapers.py
+- 2.Utilisez les numéros 1-5 pour démarrer/arrêter les scrapers
+- 3.Tapez 'q' pour quitter proprement le programme""")
+
+
+def run_scraper_in_terminal(site_dir: str) -> subprocess.Popen:
+    """Lance un scraper dans un nouveau terminal PowerShell."""
+    print(f"🚀 Démarrage du scraper pour {site_dir}...")
     
+    # Construire la commande Python pour exécuter le scraper
     scraper_path = os.path.join(site_dir, 'scraper.py')
+    python_command = f'python "{scraper_path}"'
     
-    try:
-        # Changer le répertoire de travail
-        os.chdir(site_dir)
-        
-        # Importer et exécuter le scraper
-        scraper_module = import_scraper(scraper_path)
-        
-        # Exécuter le scraper
-        if hasattr(scraper_module, 'CESEScraper'):
-            scraper = scraper_module.CESEScraper()
-        elif hasattr(scraper_module, 'FinancesScraper'):
-            scraper = scraper_module.FinancesScraper()
-        elif hasattr(scraper_module, 'AgricultureScraper'):
-            scraper = scraper_module.AgricultureScraper()
-        else:
-            raise Exception("Classe de scraper non trouvée")
-            
-        scraper.crawl()
-        
-    except Exception as e:
-        print(f"❌ Erreur lors de l'exécution du scraper {site_dir}: {str(e)}")
-    finally:
-        # Revenir au répertoire principal
-        os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    # Lancer PowerShell avec la commande Python
+    process = subprocess.Popen(
+        [
+            'powershell',
+            '-NoExit',  # Garde le terminal ouvert
+            '-Command',
+            f'cd "{site_dir}"; {python_command}'
+        ],
+        creationflags=subprocess.CREATE_NEW_CONSOLE  # Crée une nouvelle fenêtre de console
+    )
+    
+    print(f"✓ Terminal lancé pour {site_dir} (PID: {process.pid})")
+    return process
 
 def main():
     # Liste des sites à scraper
-    sites = ['cese.ma', 'oecd.org', 'agriculture.gov.ma']
+    sites = [
+        'agriculture.gov.ma',
+        'bkam.ma',
+        'cese.ma',
+        'finances.gov.ma',
+        'oecd.org'
+    ]
     
-    print("🚀 Démarrage du scraping de tous les sites...\n")
+    # Dictionnaire pour stocker les processus
+    processes: Dict[str, subprocess.Popen] = {}
     
-    for site in sites:
-        run_scraper(site)
+    print("\n=== Gestionnaire de Scrapers ===\n")
+    print("Commandes disponibles :")
+    print("1-5: Démarrer/Arrêter le scraper correspondant")
+    print("q: Quitter")
+    print("\nScrapers :")
+    for i, site in enumerate(sites, 1):
+        print(f"{i}. {site}")
     
-    print("\n✨ Scraping terminé pour tous les sites!")
+    try:
+        while True:
+            command = input("\nEntrez une commande (1-5, q pour quitter) : ").lower()
+            
+            if command == 'q':
+                break
+            
+            try:
+                index = int(command) - 1
+                if 0 <= index < len(sites):
+                    site = sites[index]
+                    
+                    if site in processes and processes[site].poll() is None:
+                        # Arrêter le scraper
+                        print(f"⏹️ Arrêt du scraper {site}...")
+                        processes[site].terminate()
+                        try:
+                            processes[site].wait(timeout=5)
+                        except subprocess.TimeoutExpired:
+                            processes[site].kill()
+                        del processes[site]
+                        print(f"✓ Scraper {site} arrêté")
+                    else:
+                        # Démarrer le scraper
+                        processes[site] = run_scraper_in_terminal(site)
+                else:
+                    print("❌ Numéro de scraper invalide")
+            except ValueError:
+                print("❌ Commande invalide")
+    
+    except KeyboardInterrupt:
+        print("\n⏹️ Arrêt demandé par l'utilisateur...")
+    
+    finally:
+        # Arrêter tous les processus en cours
+        for site, process in processes.items():
+            if process.poll() is None:
+                print(f"⏹️ Arrêt du scraper {site}...")
+                process.terminate()
+                try:
+                    process.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    process.kill()
+        
+        print("\n✨ Programme terminé")
 
 if __name__ == '__main__':
     main()
