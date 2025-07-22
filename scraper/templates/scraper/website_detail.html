@@ -1,0 +1,79 @@
+{% extends 'scraper/base.html' %}
+
+{% block title %}{{ website.name }} - PDF Scraper{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'website-list' %}">Sites Web</a></li>
+                <li class="breadcrumb-item active">{{ website.name }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h2 class="card-title">{{ website.name }}</h2>
+        <p class="card-text">
+            <a href="{{ website.url }}" target="_blank" class="text-decoration-none">
+                {{ website.url }}
+                <i class="bi bi-box-arrow-up-right ms-1"></i>
+            </a>
+        </p>
+        <p class="card-text">
+            <small class="text-muted">Ajouté le {{ website.created_at|date:"d/m/Y à H:i" }}</small>
+        </p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h3 class="mb-0">PDFs Trouvés ({{ pdfs|length }})</h3>
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-primary" onclick="window.location.reload()">
+                <i class="bi bi-arrow-clockwise"></i> Actualiser
+            </button>
+        </div>
+    </div>
+    <div class="card-body pdf-list">
+        {% if pdfs %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Titre</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pdf in pdfs %}
+                        <tr>
+                            <td>{{ pdf.title }}</td>
+                            <td>{{ pdf.downloaded_at|date:"d/m/Y H:i" }}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="{{ pdf.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-download"></i> Télécharger
+                                    </a>
+                                    <a href="{{ pdf.file_path }}" target="_blank" class="btn btn-sm btn-outline-secondary">
+                                        <i class="bi bi-file-earmark-pdf"></i> Voir
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info mb-0">
+                Aucun PDF n'a encore été trouvé pour ce site.
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

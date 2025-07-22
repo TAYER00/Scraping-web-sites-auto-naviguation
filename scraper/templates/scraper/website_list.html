@@ -1,0 +1,49 @@
+{% extends 'scraper/base.html' %}
+
+{% block title %}Sites Web - PDF Scraper{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="display-4">Sites Web</h1>
+    </div>
+    <div class="col-auto">
+        <a href="{% url 'website-create' %}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Ajouter un Site
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    {% if websites %}
+        {% for website in websites %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ website.name }}</h5>
+                    <p class="card-text text-muted">{{ website.url }}</p>
+                    <p class="card-text">
+                        <small class="text-muted">Ajouté le {{ website.created_at|date:"d/m/Y" }}</small>
+                    </p>
+                    <p class="card-text">
+                        <span class="badge bg-info">{{ website.pdfs.count }} PDFs</span>
+                    </p>
+                </div>
+                <div class="card-footer bg-transparent border-top-0">
+                    <a href="{% url 'website-detail' website.pk %}" class="btn btn-outline-primary w-100">
+                        Voir les PDFs
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                Aucun site web n'a été ajouté. 
+                <a href="{% url 'website-create' %}" class="alert-link">Ajouter un site web</a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
